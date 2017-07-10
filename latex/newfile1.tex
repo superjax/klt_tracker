@@ -1,0 +1,90 @@
+%% LyX 2.1.4 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{babel}
+\begin{document}
+
+\title{Tightly-Coupled VI-EKF}
+
+
+\author{James Jackson}
+
+\maketitle
+
+\section{$\boxplus$ and $\boxminus$ operators}
+\begin{itemize}
+\item \cite{key-1}Introduces a new syntax for working with manifold representation
+of Lie Groups as if they were vectors.
+\item Example: Quaternion Dynamics:
+\end{itemize}
+\begin{eqnarray}
+\boldsymbol{q}_{t+1} & = & \boldsymbol{q}_{t}\boxplus\boldsymbol{\theta}\\
+\boldsymbol{\theta} & = & \boldsymbol{q}_{1}\boxminus\boldsymbol{q}_{2}
+\end{eqnarray}
+
+
+It is important to note that the dimensionalities of $\boldsymbol{\theta}$
+and $\boldsymbol{q}$ are different. The actual $\boxplus$ and $\boxminus$
+operators are defined for robocentric quaternions representation as
+follows:
+
+\begin{align}
+\boxplus & :SO\left(3\right)\times\mathbb{R}^{3}\rightarrow SO\left(3\right),\\
+ & {\bf q},\boldsymbol{\theta}\mapsto{\bf q}\otimes\exp\left(\boldsymbol{\theta}\right)\\
+\boxminus & :SO\left(3\right)\times SO\left(3\right)\rightarrow\mathbb{R}^{3},\\
+ & {\bf q},{\bf p}\mapsto\log\left({\bf p}\otimes{\bf q}^{-1}\right),
+\end{align}
+
+
+This is a sort of weird syntax, but it allows us to work with these
+parameterizations as if they were vectors. These operators become
+the equivalent of vector addition and subtraction, and therefore allow
+proper defintions of derivatives and integrals across these operators.
+A properly defined $\boxplus$ manifold must obey the following identies
+
+\begin{eqnarray}
+ & x\boxplus0 & =x\\
+\forall y\in S:\quad & x\boxplus\left(y\boxminus x\right) & =y\\
+\forall\delta\in V:\quad & (x\boxplus\delta)\boxminus x & =\delta\\
+\forall\delta_{1}\delta_{1}\in\mathbb{R}^{n}:\quad & \lVert(x\boxplus\delta_{1})\boxminus(x\boxplus\delta_{2})\rVert & \leq\lVert\delta_{1}-\delta_{2}\rVert
+\end{eqnarray}
+
+
+These operators must also form a diffeomorphism from $V$ to $S$,
+so that derivatives of $\delta$ correspond to limits of $x\boxplus\delta$.
+For example, the derivative of a quaternion, as defined using the
+$\boxplus$ and $\boxminus$ operators are
+\begin{eqnarray}
+\dfrac{\partial}{\partial x}\boldsymbol{q}(x) & : & =\lim_{\epsilon\rightarrow0}\dfrac{\boldsymbol{q}(x+\epsilon)\boxminus\boldsymbol{q}(x)}{\epsilon}\\
+\dfrac{\partial}{\partial\boldsymbol{q}}x(\boldsymbol{q}) & : & =\lim_{\epsilon\rightarrow0}\left[\begin{array}{c}
+\dfrac{x\left(\boldsymbol{q}\boxplus(\boldsymbol{e}_{1}\epsilon)\right)-x\left(\boldsymbol{q}\right)}{\epsilon}\\
+\dfrac{x\left(\boldsymbol{q}\boxplus(\boldsymbol{e}_{2}\epsilon)\right)-x\left(\boldsymbol{q}\right)}{\epsilon}\\
+\dfrac{x\left(\boldsymbol{q}\boxplus(\boldsymbol{e}_{3}\epsilon)\right)-x\left(\boldsymbol{q}\right)}{\epsilon}
+\end{array}\right]^{\top}
+\end{eqnarray}
+
+
+We can now use this operator to define dynamics and Jacobians across
+our non-linear manifold representations.
+\begin{thebibliography}{1}
+\bibitem{key-1}Hertzberg, Christoph, et al. \textquotedbl{}Integrating
+generic sensor fusion algorithms with sound state representations
+through encapsulation of manifolds.\textquotedbl{} Information Fusion
+14.1 (2013): 57-77.
+
+\bibitem{key-2}Wheeler and Koch. \textquotedbl{}Derivation of the
+Relative Multiplicative Extended Kalman Filter\textquotedbl{}
+
+\bibitem{key-3}Beard, Randal W., and Timothy W. McLain. \textquotedbl{}Small
+unmanned aircraft: Theory and practice\textquotedbl{}. Princeton university
+press, 2012.
+
+\bibitem{key-4}Bloesch, Michael Andre. State Estimation for Legged
+Robots\textendash Kinematics, Inertial Sensing, and Computer Vision.
+Diss. 2017.\end{thebibliography}
+
+\end{document}

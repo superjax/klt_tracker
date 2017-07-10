@@ -1,0 +1,3764 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Indirect Multiplicative Extended Kalman Filter for Relative Target Position
+ Estimation in a Robocentric Framework
+\end_layout
+
+\begin_layout Author
+Jerel Nielsen
+\end_layout
+
+\begin_layout Section
+Nomenclature
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tabbing}
+\end_layout
+
+\end_inset
+
+ XXXXX 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+=
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+kill
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+% this line sets tab stop$p_x$ 
+\backslash
+> Forward direction 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula ${\bf x}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ State 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $P$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Covariance of the error state 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula ${\bf p}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Position of the vehicle 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula ${\bf q}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Attitude of the vehicle 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula ${\bf v}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Velocity of the vehicle 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\boldsymbol{\omega}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Angular velocity of the vehicle 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\boldsymbol{\beta}_{\boldsymbol{\omega}}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Gyro biases 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\boldsymbol{\beta}_{{\bf a}}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Accelerometer biases 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\beta_{p}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Barometer bias 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula ${\bf p}_{k}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Position of the 
+\begin_inset Formula $k^{th}$
+\end_inset
+
+ key-frame 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula ${\bf q}_{k}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Attitude of the 
+\begin_inset Formula $k^{th}$
+\end_inset
+
+ key-frame 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula ${\bf q}_{\zeta}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Shortest quaternion rotation from camera optical axis to 
+\begin_inset Formula $i^{th}$
+\end_inset
+
+ feature 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\boldsymbol{\zeta}_{i}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ 3D bearing vector to 
+\begin_inset Formula $i^{th}$
+\end_inset
+
+ feature 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\rho_{i}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Inverse distance to 
+\begin_inset Formula $i^{th}$
+\end_inset
+
+ feature 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\boldsymbol{\theta}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Attitude as a vector of Euler angles 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $P_{\zeta}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Projection onto tangent plane about bearing vector 
+\begin_inset Formula $\boldsymbol{\zeta}_{i}$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $g$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Earth's gravity 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\rho$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Air density 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $T_{s}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ GPS sample time 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $1/k_{GPS}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ GPS time constant 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\phi$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Roll 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\theta$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Pitch 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\psi_{m}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Magnetic North 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\delta_{d}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Magnetic declination 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $R_{a}^{b}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Rotation from coordinate frame 
+\begin_inset Formula $a$
+\end_inset
+
+ to coordinate frame 
+\begin_inset Formula $b$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $R_{{\bf z}}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Measurement covariance 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\boldsymbol{\eta}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ White noise 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\hat{a}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Estimate of true variable 
+\begin_inset Formula $a$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\bar{a}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Measurement of variable 
+\begin_inset Formula $a$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\dot{a}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Time derivative variable 
+\begin_inset Formula $a$
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\tilde{a}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Error of variable 
+\begin_inset Formula $a$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[5pt]
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+
+\shape italic
+Superscript
+\shape default
+
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\top$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Matrix transpose 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\mathcal{I}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Inertial coordinate frame 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $\mathcal{B}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Body coordinate frame 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\mathcal{G}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Gimbal coordinate frame 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\mathcal{K}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Camera body coordinate frame 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\mathcal{C}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Camera coordinate frame 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\mathcal{P}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Pixel coordinate frame 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\mathcal{F}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Feature coordinate frame 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $\mathcal{AB}$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Velocity/rotation of 
+\begin_inset Formula $\mathcal{A}$
+\end_inset
+
+ w.r.t.
+ 
+\begin_inset Formula $\mathcal{B}$
+\end_inset
+
+ or vector pointing from 
+\begin_inset Formula $\mathcal{A}$
+\end_inset
+
+ to 
+\begin_inset Formula $\mathcal{B}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+[5pt]
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+
+\shape italic
+Subscript
+\shape default
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $b$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Vehicle body 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $k$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Key-frame index 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $g$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Gimbal body 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $c$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Camera body 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula $i$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+>
+\end_layout
+
+\end_inset
+
+ Feature index
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tabbing}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conventions
+\end_layout
+
+\begin_layout Standard
+The following conventions are taken from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-2"
+
+\end_inset
+
+.
+ Quaternions take the form 
+\begin_inset Formula 
+\begin{equation}
+{\bf q}=q_{w}+q_{x}{\bf i}+q_{y}{\bf j}+q_{z}{\bf k}=\begin{bmatrix}\bar{{\bf q}}^{\top} & q_{w}\end{bmatrix}^{\top},
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\bar{{\bf q}}=\begin{bmatrix}q_{x} & q_{y} & q_{z}\end{bmatrix}^{\top}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Quaternion multiplication is defined by 
+\begin_inset Formula 
+\begin{equation}
+{\bf p}\otimes{\bf q}=\begin{bmatrix}p_{w}{\bf I+\left\lfloor \bar{{\bf p}}\right\rfloor } & \bar{{\bf p}}\\
+-\bar{{\bf p}}^{\top} & p_{w}
+\end{bmatrix}\begin{bmatrix}\bar{{\bf q}}\\
+q_{w}
+\end{bmatrix},
+\end{equation}
+
+\end_inset
+
+and the operator 
+\begin_inset Formula $\left\lfloor \cdot\right\rfloor $
+\end_inset
+
+ is the skew-symmetric operator defined by 
+\begin_inset Formula 
+\begin{equation}
+\left\lfloor {\bf a}\right\rfloor =\begin{bmatrix}0 & -a_{z} & a_{y}\\
+a_{z} & 0 & -a_{x}\\
+-a_{y} & a_{x} & 0
+\end{bmatrix}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Coordinate systems used in this paper are defined in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-3"
+
+\end_inset
+
+.
+ A 
+\begin_inset Formula $3\times3$
+\end_inset
+
+ rotation matrix that rotates vectors from the vehicle coordinate system
+ to the body coordinate system may be defined as 
+\begin_inset Formula 
+\begin{equation}
+R\left({\bf q}\right)=\left(2q_{w}^{2}-1\right){\bf I}-2q_{w}\left\lfloor \bar{{\bf q}}\right\rfloor +2\bar{{\bf q}}\bar{{\bf q}}^{\top}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This rotation matrix may also be defined as a function of Euler angles by
+ 
+\begin_inset Formula 
+\begin{equation}
+R\left({\bf q}\right)=R_{v_{2}}^{b}\left(\phi\right)R_{v_{1}}^{v_{2}}\left(\theta\right)R_{v}^{v_{1}}\left(\psi\right),
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula 
+\begin{align}
+R_{v_{2}}^{b}\left(\phi\right) & =\begin{bmatrix}1 & 0 & 0\\
+0 & \cos\phi & \sin\phi\\
+0 & -\sin\phi & \cos\phi
+\end{bmatrix}\\
+R_{v_{1}}^{v_{2}}\left(\theta\right) & =\begin{bmatrix}\cos\theta & 0 & -\sin\theta\\
+0 & 1 & 0\\
+\sin\theta & 0 & \cos\theta
+\end{bmatrix}\\
+R_{v}^{v_{1}}\left(\psi\right) & =\begin{bmatrix}\cos\psi & \sin\psi & 0\\
+-\sin\psi & \cos\psi & 0\\
+0 & 0 & 1
+\end{bmatrix},
+\end{align}
+
+\end_inset
+
+and where the conversion from quaternions to Euler angles is given by 
+\begin_inset Formula 
+\begin{align}
+\phi & =\mathrm{atan2}\left(\frac{2q_{w}q_{x}+2q_{y}q_{z}}{q_{w}^{2}+q_{z}^{2}-q_{x}^{2}-q_{y}^{2}}\right)\\
+\theta & =\mathrm{asin}\left(2q_{w}q_{y}-2q_{x}q_{z}\right)\\
+\psi & =\mathrm{atan2}\left(\frac{2q_{w}q_{z}+2q_{x}q_{y}}{q_{w}^{2}+q_{x}^{2}-q_{y}^{2}-q_{z}^{2}}\right).
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For inertial navigation, the following are used
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+{\bf q} & \triangleq\hat{{\bf q}}\otimes\delta{\bf q}\\
+\tilde{{\bf q}} & =\hat{{\bf q}}^{-1}\otimes{\bf q}\\
+R\left({\bf q}\right) & =R\left(\tilde{{\bf q}}\right)R\left(\hat{{\bf q}}\right),
+\end{align}
+
+\end_inset
+
+and for robocentric navigation, the following are used
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+{\bf q} & \triangleq\delta{\bf q}\otimes\hat{{\bf q}}\\
+\tilde{{\bf q}} & ={\bf q}\otimes\hat{{\bf q}}^{-1}\\
+R\left({\bf q}\right) & =R\left(\hat{{\bf q}}\right)R\left(\tilde{{\bf q}}\right).
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can approximate small rotations by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+R\left(\tilde{{\bf q}}\right) & \approx I-\left\lfloor \tilde{\boldsymbol{\theta}}\right\rfloor \\
+R^{\top}\left(\tilde{{\bf q}}\right) & \approx I+\left\lfloor \tilde{\boldsymbol{\theta}}\right\rfloor .
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Using the Gibbs vector parameterization, we can transform between Euler
+ angle and quaternion attitude representations by 
+\begin_inset Formula 
+\begin{align}
+\boldsymbol{\theta} & ={\bf q}^{\lor}=2\bar{{\bf q}}\\
+{\bf q} & =\boldsymbol{\theta}^{\land}=\frac{1}{\sqrt{4+\boldsymbol{\theta}^{\top}\boldsymbol{\theta}}}\begin{bmatrix}\boldsymbol{\theta}\\
+2
+\end{bmatrix}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Given an angular update 
+\begin_inset Formula $\boldsymbol{\delta}\in\mathbb{R}^{3}$
+\end_inset
+
+, the exponential map to a unit quaternion, defined similarly in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-4"
+
+\end_inset
+
+, is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\exp\left(\boldsymbol{\delta}\right)=\begin{bmatrix}\bar{{\bf q}}\\
+q_{w}
+\end{bmatrix}=\begin{bmatrix}\sin\left(\frac{\lVert\delta\rVert}{2}\right)\frac{\delta}{\lVert\delta\rVert}\\
+\cos\left(\frac{\lVert\delta\rVert}{2}\right)
+\end{bmatrix},
+\end{equation}
+
+\end_inset
+
+and if 
+\begin_inset Formula $\left\Vert \boldsymbol{\delta}\right\Vert \approx0$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\exp\left(\boldsymbol{\delta}\right)\approx\begin{bmatrix}\frac{\boldsymbol{\delta}}{2}\\
+1
+\end{bmatrix}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The corresponding logarithm is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\log\left({\bf q}\right)=2\mathrm{atan2}\left(\left\Vert \bar{{\bf q}}\right\Vert ,q_{w}\right)\frac{\bar{{\bf q}}}{\left\Vert \bar{{\bf q}}\right\Vert },
+\end{equation}
+
+\end_inset
+
+and if 
+\begin_inset Formula $\left\Vert \bar{{\bf q}}\right\Vert \approx0$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\log\left({\bf q}\right)\approx\mathrm{sign}\left(q_{w}\right)\bar{{\bf q}}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For inertial-relative navigation the boxplus and boxminus operators are
+ defined by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\boxplus & :SO\left(3\right)\times\mathbb{R}^{3}\rightarrow SO\left(3\right),\\
+ & {\bf q},\boldsymbol{\theta}\mapsto{\bf q}\otimes\exp\left(\boldsymbol{\theta}\right)\\
+\boxminus & :SO\left(3\right)\times SO\left(3\right)\rightarrow\mathbb{R}^{3},\\
+ & {\bf q},{\bf p}\mapsto\log\left({\bf p}\otimes{\bf q}^{-1}\right),
+\end{align}
+
+\end_inset
+
+and for body-relative navigation the boxplus and boxminus operators are
+ defined by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\boxplus & :SO\left(3\right)\times\mathbb{R}^{3}\rightarrow SO\left(3\right),\\
+ & {\bf q},\boldsymbol{\theta}\mapsto\exp\left(\boldsymbol{\theta}\right)\otimes{\bf q}\\
+\boxminus & :SO\left(3\right)\times SO\left(3\right)\rightarrow\mathbb{R}^{3},\\
+ & {\bf q},{\bf p}\mapsto\log\left({\bf q}\otimes{\bf p}^{-1}\right)
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Coordinate reference frames are similar to 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-3"
+
+\end_inset
+
+.
+ There is a fixed, inertial coordinate system.
+ The vehicle frame is centered on the vehicle body with its axes aligned
+ with the inertial frame.
+ The body frame is the vehicle frame rotated so that its axes align with
+ the body.
+ The gimbal frame is the body frame translated to the gimbal and rotated
+ to align with the gimbal.
+ The camera body frame is the gimbal frame translated and rotated to align
+ with the camera.
+ Typically, camera coordinates have the z-axis align with the optical axis
+ and x-axis to the right.
+ So, the rotation from the camera body frame to the camera frame is simply
+ switching the axes.
+ Finally, from the camera frame, we can perform a perspective projection
+ into the pixel frame via the intrinsic camera matrix, assuming scene depth
+ is known.
+ We can also rotate from the camera frame to the feature frame, which aligns
+ the optical axis with a feature via shortest axis-angle rotation.
+\end_layout
+
+\begin_layout Section
+Propagation
+\end_layout
+
+\begin_layout Standard
+Some derivations for this section are found in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-2"
+
+\end_inset
+
+.
+ The vehicle state is then defined by 
+\begin_inset Formula 
+\begin{equation}
+{\bf x}=\begin{bmatrix}{\bf p}^{\top} & {\bf q}^{\top} & {\bf v}^{\top} & \boldsymbol{\beta}_{\boldsymbol{\omega}}^{\top} & \boldsymbol{\beta}_{{\bf a}}^{\top} & {\bf q}_{i}^{\top} & \rho_{i}\end{bmatrix}^{\top},
+\end{equation}
+
+\end_inset
+
+and the dynamics w.r.t.
+ the body frame are defined by 
+\begin_inset Formula 
+\begin{align}
+\dot{{\bf p}} & =R^{\top}\left(\hat{{\bf q}}\right)\hat{{\bf v}}\\
+\dot{\hat{{\bf q}}} & =\hat{\boldsymbol{\omega}}\\
+\dot{\hat{{\bf v}}} & =\left\lfloor \hat{{\bf v}}\right\rfloor \hat{\boldsymbol{\omega}}+R\left(\hat{{\bf q}}\right){\bf g}+{\bf k}{\bf k}^{\top}\hat{{\bf a}}\\
+\dot{\hat{\boldsymbol{\beta}}}_{\boldsymbol{\omega}} & ={\bf 0}\\
+\dot{\hat{\boldsymbol{\beta}}}_{{\bf a}} & ={\bf 0}\\
+\dot{\hat{\beta}}_{p} & =0\\
+\dot{\hat{{\bf q}}}_{\zeta_{i}} & =-XP_{\hat{\zeta}}^{\top}\left(\hat{\rho}_{i}\hat{{\bf v}}_{c}^{c}+\left\lfloor \hat{\boldsymbol{\omega}}_{c}^{c}\right\rfloor \hat{\boldsymbol{\zeta}}_{i}^{c}\right)\\
+\dot{\hat{\rho}}_{i} & =\hat{\rho}_{i}^{2}\left(\hat{\boldsymbol{\zeta}}_{i}^{c}\right)^{\top}\hat{{\bf v}}_{c}^{c}
+\end{align}
+
+\end_inset
+
+where 
+\begin_inset Formula 
+\begin{align}
+{\bf k} & =\begin{bmatrix}0 & 0 & 1\end{bmatrix}^{\top}\\
+{\bf g} & =\begin{bmatrix}0 & 0 & g\end{bmatrix}^{\top}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We use a quaternion as the underlying representation for the feature direction,
+ although changes occur on the 2D tangent plane of the unit sphere.
+ This representation is continuous and avoids singularities.
+\end_layout
+
+\begin_layout Standard
+The vector and quaternion components of the state can be updated on each
+ one's particular manifold 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-1"
+
+\end_inset
+
+.
+ The vector and quaternion parts are separated as
+\begin_inset Formula 
+\begin{align}
+{\bf x}_{{\bf v}} & =\begin{bmatrix}{\bf p}^{\top} & {\bf v}^{\top} & \boldsymbol{\beta}_{\boldsymbol{\omega}}^{\top} & \boldsymbol{\beta}_{{\bf a}}^{\top} & \beta_{p} & \rho_{i}\end{bmatrix}^{\top}\\
+{\bf x}_{{\bf q}} & ={\bf q}\\
+{\bf x}_{\boldsymbol{\zeta}_{i}} & ={\bf q}_{\zeta_{i}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+State dynamics are used to propagate the estimated state forward in time
+ via Euler integration.
+ The vector state is propagated by simply adding small changes, but the
+ quaternion parts are propagated more carefully.
+ Similar to 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-4"
+
+\end_inset
+
+, the propagation of each component is given by 
+\begin_inset Formula 
+\begin{align}
+\hat{{\bf x}}_{{\bf v}}\left(t+\Delta t\right) & =\hat{{\bf x}}_{{\bf v}}\left(t\right)\boxplus\dot{\hat{{\bf x}}}_{{\bf v}}\Delta t\\
+ & =\hat{{\bf x}}_{{\bf v}}\left(t\right)+\dot{\hat{{\bf x}}}_{{\bf v}}\Delta t\\
+\hat{{\bf x}}_{{\bf q}}\left(t+\Delta t\right) & =\hat{{\bf x}}_{{\bf q}}\left(t\right)\boxplus\dot{\hat{{\bf x}}}_{{\bf q}}\Delta t\\
+ & =\hat{{\bf x}}_{{\bf q}}\left(t\right)\otimes\exp\left(\dot{\hat{{\bf x}}}_{{\bf q}}\Delta t\right)\\
+\\
+ & =\hat{{\bf x}}_{{\bf q}}\left(t\right)\boxplus\left(\Delta t\dfrac{1}{2}\hat{{\bf x}}_{{\bf q}}\left(t\right)\otimes\begin{bmatrix}\hat{\boldsymbol{\omega}}\left(t\right)\\
+0
+\end{bmatrix}\right)\\
+ & =\hat{{\bf x}}_{{\bf q}}\left(t\right)\boxplus\left(\Delta t\hat{{\bf x}}_{{\bf q}}^{-1}\left(t\right)\otimes\begin{bmatrix}\hat{\boldsymbol{\omega}}\left(t\right)\\
+0
+\end{bmatrix}\otimes\hat{{\bf x}}_{{\bf q}}\left(t\right)\right)\\
+ & =\hat{{\bf x}}_{{\bf q}}\left(t\right)\otimes\hat{{\bf x}}_{{\bf q}}^{-1}\left(t\right)\otimes\exp\left(\Delta t\hat{\boldsymbol{\omega}}\left(t\right)\right)\otimes\hat{{\bf x}}_{{\bf q}}\left(t\right)\\
+ & =\exp\left(\Delta t\hat{\boldsymbol{\omega}}\left(t\right)\right)\otimes\hat{{\bf x}}_{{\bf q}}\left(t\right)\\
+\hat{{\bf x}}_{\boldsymbol{\zeta}_{i}}\left(t+\Delta t\right) & =\hat{{\bf x}}_{\boldsymbol{\zeta}_{i}}\left(t\right)\boxplus\dot{\hat{{\bf x}}}_{\zeta_{i}}\Delta t\\
+ & =\hat{{\bf x}}_{\boldsymbol{\zeta}_{i}}\left(t\right)\otimes\exp\left(P_{\hat{\zeta}_{i}}\dot{\hat{{\bf x}}}_{\zeta_{i}}\Delta t\right)\\
+\\
+ & =\hat{{\bf x}}_{\boldsymbol{\zeta}_{i}}\left(t\right)\boxplus\Delta t\left(-P_{\hat{\zeta}}^{\top}\left(\hat{\rho}_{i}\hat{{\bf v}}_{c}^{c}+\left\lfloor \hat{\boldsymbol{\omega}}_{c}^{c}\right\rfloor \hat{\boldsymbol{\zeta}}_{i}^{c}\right)\right)\\
+ & =\hat{{\bf x}}_{\boldsymbol{\zeta}_{i}}\left(t\right)\otimes\exp\left(\Delta tP_{\hat{\zeta}}\left(-P_{\hat{\zeta}}^{\top}\left(\hat{\rho}_{i}\hat{{\bf v}}_{c}^{c}+\left\lfloor \hat{\boldsymbol{\omega}}_{c}^{c}\right\rfloor \hat{\boldsymbol{\zeta}}_{i}^{c}\right)\right)\right)\\
+ & =\hat{{\bf x}}_{\boldsymbol{\zeta}_{i}}\left(t\right)\otimes\exp\left(-\Delta t\left(I-\hat{\boldsymbol{\zeta}}_{i}^{c}\left(\hat{\boldsymbol{\zeta}}_{i}^{c}\right)^{\top}\right)\left(\hat{\rho}_{i}\hat{{\bf v}}_{c}^{c}+\left\lfloor \hat{\boldsymbol{\omega}}_{c}^{c}\right\rfloor \hat{\boldsymbol{\zeta}}_{i}^{c}\right)\right)\\
+ & =\hat{{\bf x}}_{\boldsymbol{\zeta}_{i}}\left(t\right)\otimes\exp\left(-\Delta t\left(\hat{\rho}_{i}\left(I-\hat{\boldsymbol{\zeta}}_{i}^{c}\left(\hat{\boldsymbol{\zeta}}_{i}^{c}\right)^{\top}\right)\hat{{\bf v}}_{c}^{c}+\left\lfloor \hat{\boldsymbol{\omega}}_{c}^{c}\right\rfloor \hat{\boldsymbol{\zeta}}_{i}^{c}\right)\right)
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The error state is given by 
+\begin_inset Formula 
+\begin{equation}
+\delta{\bf x}=\begin{bmatrix}\delta{\bf p}^{\top} & \delta\boldsymbol{\theta}^{\top} & \delta{\bf v}^{\top} & \delta\boldsymbol{\beta}_{\boldsymbol{\omega}}^{\top} & \delta\boldsymbol{\beta}_{{\bf a}}^{\top} & \delta\beta_{p} & \delta\boldsymbol{\zeta}_{i}^{\top} & \delta\rho_{i}\end{bmatrix}^{\top},
+\end{equation}
+
+\end_inset
+
+but is not propagated forward in time because its expected value is zero.
+ However, its covariance must be propagated.
+ The error state dynamics derived in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-2"
+
+\end_inset
+
+ are given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\delta\dot{{\bf p}} & \approx-R^{\top}\left(\hat{{\bf q}}\right)\left\lfloor \hat{{\bf v}}\right\rfloor \delta\boldsymbol{\theta}+R^{\top}\left(\hat{{\bf q}}\right)\delta{\bf v}\\
+\delta\dot{\boldsymbol{\theta}} & \approx-\left\lfloor \hat{\boldsymbol{\omega}}\right\rfloor \delta\boldsymbol{\theta}-\delta\boldsymbol{\beta}_{\boldsymbol{\omega}}-\boldsymbol{\eta}_{\boldsymbol{\omega}}\\
+\delta\dot{{\bf v}} & =\left\lfloor R\left(\hat{{\bf q}}\right){\bf g}\right\rfloor \delta\boldsymbol{\theta}-\left\lfloor \hat{\boldsymbol{\omega}}\right\rfloor \delta{\bf v}-\left\lfloor \hat{{\bf v}}\right\rfloor \delta\boldsymbol{\beta}_{\boldsymbol{\omega}}-{\bf k}{\bf k}^{\top}\delta\boldsymbol{\beta}_{{\bf a}}-\left\lfloor \hat{{\bf v}}\right\rfloor \boldsymbol{\eta}_{\boldsymbol{\omega}}-{\bf k}{\bf k}^{\top}\boldsymbol{\eta}_{{\bf a}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We note that the minimal representation for attitude, 
+\begin_inset Formula $\delta\boldsymbol{\theta}$
+\end_inset
+
+, is 3-dimensional, and the minimal representation for feature unit vectors,
+ 
+\begin_inset Formula $\delta\boldsymbol{\zeta}_{i}$
+\end_inset
+
+, is 2-dimensional.
+\end_layout
+
+\begin_layout Standard
+Error depth dynamics are 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\delta\dot{\rho}_{i} & =\rho_{i}^{2}\left(\boldsymbol{\zeta}_{i}^{c}\right)^{\top}{\bf v}_{c}^{c}-\hat{\rho}_{i}^{2}\left(\hat{\boldsymbol{\zeta}}_{i}^{c}\right)^{\top}\hat{{\bf v}}_{c}^{c}\\
+ & \approx\hat{\rho}_{i}^{2}\left(\hat{\boldsymbol{\zeta}}_{i}^{c}\right)^{\top}R_{b}^{c}\delta{\bf v}_{b}^{b}+\hat{\rho}_{i}^{2}\left(\hat{\boldsymbol{\zeta}}_{i}^{c}\right)^{\top}R_{b}^{c}\left\lfloor {\bf p}_{c}^{b}\right\rfloor \delta\boldsymbol{\beta}_{\boldsymbol{\omega}}+\hat{\rho}_{i}^{2}\left(\hat{{\bf v}}_{c}^{c}\right)^{\top}\hat{P}_{\delta_{i}}\delta\boldsymbol{\zeta}_{i}^{c}+2\hat{\rho}_{i}\left(\hat{\boldsymbol{\zeta}}_{i}^{c}\right)^{\top}\hat{{\bf v}}_{c}^{c}\delta\rho_{i}+\hat{\rho}_{i}^{2}\left(\hat{\boldsymbol{\zeta}}_{i}^{c}\right)^{\top}R_{b}^{c}\left\lfloor {\bf p}_{c}^{b}\right\rfloor \boldsymbol{\eta}_{\boldsymbol{\omega}},
+\end{align*}
+
+\end_inset
+
+and error bearing dynamics are
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\delta\dot{\boldsymbol{\zeta}}_{i} & =-XP_{\zeta}^{\top}\left(\rho_{i}{\bf v}_{c}^{c}+\left\lfloor \boldsymbol{\omega}_{c}^{c}\right\rfloor \boldsymbol{\zeta}_{i}^{c}\right)-\left(-XP_{\hat{\zeta}}^{\top}\left(\hat{\rho}_{i}\hat{{\bf v}}_{c}^{c}+\left\lfloor \hat{\boldsymbol{\omega}}_{c}^{c}\right\rfloor \hat{\boldsymbol{\zeta}}_{i}^{c}\right)\right)\\
+ & \approx X\hat{P}_{\zeta_{i}}^{\top}\left\{ \left(\hat{\rho}_{i}\left\lfloor \hat{{\bf v}}_{c}^{c}\right\rfloor +\left\lfloor \left\lfloor \hat{\boldsymbol{\omega}}_{c}^{c}\right\rfloor \hat{\boldsymbol{\zeta}}_{i}^{c}\right\rfloor \right)\delta\boldsymbol{\theta}-\hat{\rho}_{i}R_{b}^{c}\delta{\bf v}_{b}^{b}-\left(\hat{\rho}_{i}R_{b}^{c}\left\lfloor {\bf p}_{c}^{b}\right\rfloor +\left\lfloor \hat{\boldsymbol{\zeta}}_{i}^{c}\right\rfloor R_{b}^{c}\right)\delta\boldsymbol{\beta}_{\boldsymbol{\omega}}-\left\lfloor \hat{\boldsymbol{\omega}}_{c}^{c}\right\rfloor \hat{P}_{\delta_{i}}\delta\boldsymbol{\zeta}_{i}^{c}-\hat{{\bf v}}_{c}^{c}\delta\rho_{i}-\left(\hat{\rho}_{i}R_{b}^{c}\left\lfloor {\bf p}_{c}^{b}\right\rfloor +\left\lfloor \hat{\boldsymbol{\zeta}}_{i}^{c}\right\rfloor R_{b}^{c}\right)\boldsymbol{\eta}_{\boldsymbol{\omega}}\right\} .
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The error state covariance derivative is given by 
+\begin_inset Formula 
+\begin{equation}
+\dot{P}=FP+PF^{\top}+GQ_{{\bf u}}G^{\top}+Q_{{\bf x}},
+\end{equation}
+
+\end_inset
+
+where the Jacobians are given by 
+\begin_inset Formula 
+\begin{align}
+F & =\frac{\partial\delta\dot{{\bf x}}}{\partial\delta{\bf x}}=\begin{bmatrix}{\bf 0} & -R^{\top}\left(\hat{{\bf q}}\right)\lfloor\hat{{\bf v}}\rfloor & R^{\top}\left(\hat{{\bf q}}\right) & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf 0} & -\lfloor\hat{\boldsymbol{\omega}}\rfloor & {\bf 0} & -I & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf 0} & \lfloor R\left(\hat{{\bf q}}\right){\bf g}\rfloor & -\lfloor\hat{\boldsymbol{\omega}}\rfloor & -\lfloor\hat{{\bf v}}\rfloor & -{\bf k}{\bf k}^{\top} & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & 0 & {\bf 0} & 0\\
+{\bf 0} & \frac{\partial\delta\dot{\boldsymbol{\zeta}}_{i}}{\partial\delta\boldsymbol{\theta}} & \frac{\partial\delta\dot{\boldsymbol{\zeta}}_{i}}{\partial\delta{\bf v}} & \frac{\partial\delta\dot{\boldsymbol{\zeta}}_{i}}{\partial\delta\boldsymbol{\beta}_{\boldsymbol{\omega}}} & {\bf 0} & {\bf 0} & \frac{\partial\delta\dot{\boldsymbol{\zeta}}_{i}}{\partial\delta\boldsymbol{\zeta}_{i}} & \frac{\partial\delta\dot{\boldsymbol{\zeta}}_{i}}{\partial\delta\rho_{i}}\\
+{\bf 0} & {\bf 0} & \frac{\partial\delta\dot{\rho}_{i}}{\partial\delta{\bf v}} & \frac{\partial\delta\dot{\rho}_{i}}{\partial\delta\boldsymbol{\beta}_{\boldsymbol{\omega}}} & {\bf 0} & 0 & \frac{\partial\delta\dot{\rho}_{i}}{\partial\delta\boldsymbol{\zeta}_{i}} & \frac{\partial\delta\dot{\rho}_{i}}{\partial\delta\rho_{i}}
+\end{bmatrix}\\
+G & =\frac{\partial\delta\dot{{\bf x}}}{\partial\delta{\bf u}}=\begin{bmatrix}{\bf 0} & {\bf 0}\\
+-I & {\bf 0}\\
+-\lfloor\hat{{\bf v}}\rfloor & -{\bf k}{\bf k}^{\top}\\
+{\bf 0} & {\bf 0}\\
+{\bf 0} & {\bf 0}\\
+{\bf 0} & {\bf 0}\\
+-X\hat{P}_{\zeta_{i}}^{\top}\left(\hat{\rho}_{i}R_{b}^{c}\left\lfloor {\bf p}_{c}^{b}\right\rfloor +\left\lfloor \hat{\boldsymbol{\zeta}}_{i}^{c}\right\rfloor R_{b}^{c}\right) & {\bf 0}\\
+\hat{\rho}_{i}^{2}\left(\hat{\boldsymbol{\zeta}}_{i}^{c}\right)^{\top}R_{b}^{c}\left\lfloor {\bf p}_{c}^{b}\right\rfloor  & {\bf 0}
+\end{bmatrix},
+\end{align}
+
+\end_inset
+
+and where
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\frac{\partial\delta\dot{\boldsymbol{\zeta}}_{i}}{\partial\delta\boldsymbol{\theta}} & =X\hat{P}_{\zeta_{i}}^{\top}\left(\hat{\rho}_{i}\left\lfloor \hat{{\bf v}}_{c}^{c}\right\rfloor +\left\lfloor \left\lfloor \hat{\boldsymbol{\omega}}_{c}^{c}\right\rfloor \hat{\boldsymbol{\zeta}}_{i}^{c}\right\rfloor \right)\\
+\frac{\partial\delta\dot{\boldsymbol{\zeta}}_{i}}{\partial\delta{\bf v}} & =-\hat{\rho}_{i}X\hat{P}_{\zeta_{i}}^{\top}R_{b}^{c}\\
+\frac{\partial\delta\dot{\boldsymbol{\zeta}}_{i}}{\partial\delta\boldsymbol{\beta}_{\boldsymbol{\omega}}} & =-X\hat{P}_{\zeta_{i}}^{\top}\left(\hat{\rho}_{i}R_{b}^{c}\left\lfloor {\bf p}_{c}^{b}\right\rfloor +\left\lfloor \hat{\boldsymbol{\zeta}}_{i}^{c}\right\rfloor R_{b}^{c}\right)\\
+\frac{\partial\delta\dot{\boldsymbol{\zeta}}_{i}}{\partial\delta\boldsymbol{\zeta}_{i}} & =-X\hat{P}_{\zeta_{i}}^{\top}\left\lfloor \hat{\boldsymbol{\omega}}_{c}^{c}\right\rfloor \hat{P}_{\delta_{i}}\\
+\frac{\partial\delta\dot{\boldsymbol{\zeta}}_{i}}{\partial\delta\rho_{i}} & =-X\hat{P}_{\zeta_{i}}^{\top}\hat{{\bf v}}_{c}^{c}\\
+\frac{\partial\delta\dot{\rho}_{i}}{\partial\delta{\bf v}} & =\hat{\rho}_{i}^{2}\left(\hat{\boldsymbol{\zeta}}_{i}^{c}\right)^{\top}R_{b}^{c}\\
+\frac{\partial\delta\dot{\rho}_{i}}{\partial\delta\boldsymbol{\beta}_{\boldsymbol{\omega}}} & =\hat{\rho}_{i}^{2}\left(\hat{\boldsymbol{\zeta}}_{i}^{c}\right)^{\top}R_{b}^{c}\left\lfloor {\bf p}_{c}^{b}\right\rfloor \\
+\frac{\partial\delta\dot{\rho}_{i}}{\partial\delta\boldsymbol{\zeta}_{i}} & =\hat{\rho}_{i}^{2}\left(\hat{{\bf v}}_{c}^{c}\right)^{\top}\hat{P}_{\delta_{i}}\\
+\frac{\partial\delta\dot{\rho}_{i}}{\partial\delta\rho_{i}} & =2\hat{\rho}_{i}\left(\hat{\boldsymbol{\zeta}}_{i}^{c}\right)^{\top}\hat{{\bf v}}_{c}^{c}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The matrix 
+\begin_inset Formula $Q_{{\bf u}}$
+\end_inset
+
+ is the covariance of the gyro and accelerometer input 
+\begin_inset Formula ${\bf u}=\begin{bmatrix}\tilde{\boldsymbol{\omega}}^{\top} & \tilde{{\bf a}}^{\top}\end{bmatrix}^{\top}$
+\end_inset
+
+, and 
+\begin_inset Formula $Q_{{\bf x}}$
+\end_inset
+
+ is the process noise covariance.
+ The error input is given by 
+\begin_inset Formula $\delta{\bf u}=\begin{bmatrix}\boldsymbol{\eta}_{\boldsymbol{\omega}}^{\top} & \boldsymbol{\eta}_{{\bf a}}^{\top}\end{bmatrix}^{\top}$
+\end_inset
+
+.
+ The error state covariance is also propagated with Euler integration by
+ 
+\begin_inset Formula 
+\begin{equation}
+P\left(t+\Delta t\right)=P\left(t\right)+\dot{P}\Delta t.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Update
+\end_layout
+
+\begin_layout Standard
+The measurement residual error for a general measurement with measurement
+ model 
+\begin_inset Formula ${\bf h}$
+\end_inset
+
+ is computed by 
+\begin_inset Formula 
+\begin{equation}
+{\bf r}={\bf z}\boxminus{\bf h}\left(\hat{{\bf x}}\right),
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula ${\bf z}$
+\end_inset
+
+ is a sensor measurement.
+\end_layout
+
+\begin_layout Standard
+The measurement uncertainty is computed by 
+\begin_inset Formula 
+\begin{equation}
+S=HPH^{\top}+R_{{\bf z}},
+\end{equation}
+
+\end_inset
+
+and the Kalman gain is then given by 
+\begin_inset Formula 
+\begin{equation}
+K=PH^{\top}S^{-1}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The update is usually given by 
+\begin_inset Formula 
+\begin{equation}
+\delta{\bf x}^{+}=\delta{\bf x}\boxplus K{\bf r},
+\end{equation}
+
+\end_inset
+
+but the quaternion portion cannot be correctly updated with addition.
+ Separating 
+\begin_inset Formula $K{\bf r}$
+\end_inset
+
+ into a vector state 
+\begin_inset Formula $\Delta{\bf v}$
+\end_inset
+
+, an attitude state 
+\begin_inset Formula $\Delta\boldsymbol{\theta}$
+\end_inset
+
+, and a we perform the update by 
+\begin_inset Formula 
+\begin{align}
+\hat{{\bf x}}_{{\bf v}}^{+} & =\hat{{\bf x}}_{{\bf v}}\boxplus\Delta{\bf v}\\
+ & =\hat{{\bf x}}_{{\bf v}}+\Delta{\bf v}\\
+\hat{{\bf x}}_{{\bf q}}^{+} & =\hat{{\bf x}}_{{\bf q}}\boxplus\Delta\boldsymbol{\theta}\\
+ & =\hat{{\bf x}}_{{\bf q}}\otimes\exp\Delta\boldsymbol{\theta}\\
+\hat{{\bf x}}_{\zeta_{i}}^{+} & =\hat{{\bf x}}_{\zeta_{i}}\boxplus\Delta\boldsymbol{\zeta}_{i}\\
+ & =\hat{{\bf x}}_{\zeta_{i}}\otimes\exp\left(P_{\zeta_{i}}\Delta\boldsymbol{\zeta}_{i}\right).
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The covariance is updated by 
+\begin_inset Formula 
+\begin{equation}
+P^{+}=\left(I-KH\right)P.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Sensor Models
+\end_layout
+
+\begin_layout Subsection
+IMU
+\end_layout
+
+\begin_layout Standard
+The gyro and accelerometer measurement models are given by 
+\begin_inset Formula 
+\begin{align}
+\tilde{\boldsymbol{\omega}} & =\boldsymbol{\omega}+\boldsymbol{\beta}_{\boldsymbol{\omega}}+\boldsymbol{\eta}_{\boldsymbol{\omega}}\\
+\tilde{{\bf a}} & ={\bf a}+\boldsymbol{\beta}_{{\bf a}}+\boldsymbol{\eta}_{{\bf a}},
+\end{align}
+
+\end_inset
+
+and their best estimates are 
+\begin_inset Formula 
+\begin{align}
+\hat{\boldsymbol{\omega}} & =\tilde{\boldsymbol{\omega}}-\hat{\boldsymbol{\beta}}_{\boldsymbol{\omega}}\\
+\hat{{\bf a}} & =\tilde{{\bf a}}-\hat{\boldsymbol{\beta}}_{{\bf a}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+These estimates are used as inputs to propagate the state estimate.
+\end_layout
+
+\begin_layout Subsection
+Sonar
+\end_layout
+
+\begin_layout Standard
+The sonar measurement model is given by 
+\begin_inset Formula 
+\begin{equation}
+h_{sonar}=-p_{d}+\eta_{sonar},
+\end{equation}
+
+\end_inset
+
+and its error model is then given by 
+\begin_inset Formula 
+\begin{align}
+r_{sonar} & =h_{sonar}\left({\bf x}\right)-h_{sonar}\left(\hat{{\bf x}}\right)\\
+ & =-p_{d}+\eta_{sonar}-\left(-\hat{p}_{d}\right)\\
+ & =-\delta p_{d}+\eta_{sonar}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The measurement Jacobian is then 
+\begin_inset Formula 
+\begin{align}
+H_{sonar} & =\frac{\partial r_{sonar}}{\partial\delta{\bf x}}\\
+ & =\begin{bmatrix}-{\bf k}^{\top} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}\end{bmatrix}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Barometer
+\end_layout
+
+\begin_layout Standard
+ROSflight contains an altitude lookup table for pressure measurements coming
+ from the barometer, so its measurement model is similar to the sonar model,
+ if we use the altitude estimate published from ROSflight.
+ The barometer measurement model is given by 
+\begin_inset Formula 
+\begin{equation}
+h_{baro}\left({\bf x}\right)=-p_{d}+\beta_{p}+\eta_{baro},
+\end{equation}
+
+\end_inset
+
+and estimated model by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+h_{baro}\left(\hat{{\bf x}}\right)=-\hat{p}_{d}+\hat{\beta}_{p}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Its error model is then given by 
+\begin_inset Formula 
+\begin{align}
+r_{baro} & =h_{baro}\left({\bf x}\right)-h_{baro}\left(\hat{{\bf x}}\right)\\
+ & =-p_{d}+\beta_{p}+\eta_{baro}-\left(-\hat{p}_{d}+\hat{\beta}_{p}\right)\\
+ & =-\delta p_{d}+\delta\beta_{p}+\eta_{baro}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The measurement Jacobian is then 
+\begin_inset Formula 
+\begin{align}
+H_{baro} & =\frac{\partial r_{baro}}{\partial\delta{\bf x}}\\
+ & =\begin{bmatrix}-{\bf k}^{\top} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & 1\end{bmatrix}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Magnetometer
+\end_layout
+
+\begin_layout Standard
+The magnetometer measures a magnetic field vector 
+\begin_inset Formula ${\bf m}_{0}$
+\end_inset
+
+ in the body reference frame 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-3"
+
+\end_inset
+
+.
+ Pitch and roll of the aircraft is removed from the measurement by 
+\begin_inset Formula 
+\begin{equation}
+{\bf m}=R_{v_{1}}^{v_{2}}\left(\theta\right)^{\top}R_{v_{2}}^{b}\left(\phi\right)^{\top}{\bf m}_{0},
+\end{equation}
+
+\end_inset
+
+and the magnetic heading measurement is then given by 
+\begin_inset Formula 
+\begin{equation}
+\psi_{m}=-\mathrm{atan2}\left(m_{y},m_{x}\right).
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From eq.
+ 7.11 in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-3"
+
+\end_inset
+
+, heading is given by 
+\begin_inset Formula 
+\begin{equation}
+\psi=\delta_{d}+\psi_{m},
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\delta_{d}\approx0.1986$
+\end_inset
+
+ in Provo, UT.
+\end_layout
+
+\begin_layout Standard
+The magnetometer measurement model is given by 
+\begin_inset Formula 
+\begin{equation}
+h_{mag}=\psi+\beta_{mag}+\eta_{mag},
+\end{equation}
+
+\end_inset
+
+and its error model is then given by 
+\begin_inset Formula 
+\begin{align}
+r_{mag} & =h_{mag}\left({\bf x}\right)-h_{mag}\left(\hat{{\bf x}}\right)\\
+ & =\psi+\beta_{mag}+\eta_{mag}-\left(\hat{\psi}-\beta_{mag}\right)\\
+ & =\delta\psi+\eta_{mag}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that with calibration, 
+\begin_inset Formula $\beta_{mag}\approx0$
+\end_inset
+
+, so it does not need to be estimated.
+\end_layout
+
+\begin_layout Standard
+The measurement Jacobian is then 
+\begin_inset Formula 
+\begin{align}
+H_{mag} & =\frac{\partial r_{mag}}{\partial\delta{\bf x}}\\
+ & =\begin{bmatrix}{\bf 0} & {\bf k}^{\top} & {\bf 0} & {\bf 0} & {\bf 0}\end{bmatrix}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+GPS
+\end_layout
+
+\begin_layout Standard
+The GPS measurement model is given by 
+\begin_inset Formula 
+\begin{equation}
+{\bf h}_{gps}\left[n\right]=\begin{bmatrix}p_{b,n}+\eta_{n}\\
+p_{b,e}+\eta_{e}\\
+p_{b,d}+\eta_{d}\\
+V_{g}+\eta_{V_{g}}\\
+\psi+\eta_{\psi}
+\end{bmatrix},
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula 
+\begin{align}
+{\bf v}_{g} & =I_{2\times3}R^{\top}\left({\bf q}_{b}\right){\bf v}_{b}\\
+I_{2\times3} & =\begin{bmatrix}1 & 0 & 0\\
+0 & 1 & 0
+\end{bmatrix}\\
+V_{g} & =\sqrt{{\bf v}_{g}^{\top}{\bf v}_{g}}\\
+\psi & =\arctan2\left({\bf v}_{g,y},{\bf v}_{g,x}\right),
+\end{align}
+
+\end_inset
+
+and its error model is then given by 
+\begin_inset Formula 
+\begin{equation}
+{\bf r}_{gps}=\begin{bmatrix}\delta p_{b,n}+\eta_{n}\\
+\delta p_{b,e}+\eta_{e}\\
+\delta p_{b,d}+\eta_{d}\\
+\delta V_{g}+\eta_{V_{g}}\\
+\delta\psi+\eta_{\psi}
+\end{bmatrix}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The ground speed and course error derivatives are difficult to compute analytica
+lly in terms of the error state.
+ These will simply be computed numerically.
+ The measurement Jacobian is given by 
+\begin_inset Formula 
+\begin{align}
+H_{gps} & =\frac{\partial{\bf r}_{gps}}{\partial\delta{\bf x}}\\
+ & =\begin{bmatrix}{\bf i}^{\top} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf j}^{\top} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf k}^{\top} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf 0} & \frac{\partial{\bf r}_{gps,V_{g}}}{\partial\delta\boldsymbol{\theta}_{b}} & \frac{\partial{\bf r}_{gps,V_{g}}}{\partial\delta{\bf v}_{b}} & {\bf 0} & {\bf 0}\\
+{\bf 0} & \frac{\partial{\bf r}_{gps,\boldsymbol{\theta}_{b}}}{\partial\delta\boldsymbol{\theta}_{b}} & \frac{\partial{\bf r}_{gps,\boldsymbol{\theta}_{b}}}{\partial\delta{\bf v}_{b}} & {\bf 0} & {\bf 0}
+\end{bmatrix},
+\end{align}
+
+\end_inset
+
+where 
+\begin_inset Formula 
+\begin{align}
+{\bf i} & =\begin{bmatrix}1 & 0 & 0\end{bmatrix}^{\top}\\
+{\bf j} & =\begin{bmatrix}0 & 1 & 0\end{bmatrix}^{\top}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Attitude
+\end_layout
+
+\begin_layout Standard
+The flight controller estimates attitude very well with a complementary
+ filter, so we can use its attitude estimate to update roll and pitch.
+ The attitude measurement model is given by 
+\begin_inset Formula 
+\begin{equation}
+{\bf h}_{att}=\begin{bmatrix}\phi_{b}+\eta_{\phi_{b}}\\
+\theta_{b}+\eta_{\theta_{b}}
+\end{bmatrix},
+\end{equation}
+
+\end_inset
+
+and its error model is then given by 
+\begin_inset Formula 
+\begin{align}
+{\bf r}_{att} & ={\bf h}_{att}\left({\bf x}\right)-{\bf h}_{att}\left(\hat{{\bf x}}\right)\\
+ & =\begin{bmatrix}\delta\phi_{b}+\eta_{\phi_{b}}\\
+\delta\theta_{b}+\eta_{\theta_{b}}
+\end{bmatrix}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The measurement Jacobian is then 
+\begin_inset Formula 
+\begin{align}
+H_{att} & =\frac{\partial{\bf r}_{att}}{\partial\delta{\bf x}}\\
+ & =\begin{bmatrix}{\bf 0} & {\bf i}^{\top} & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf 0} & {\bf j}^{\top} & {\bf 0} & {\bf 0} & {\bf 0}
+\end{bmatrix}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Image Features
+\end_layout
+
+\begin_layout Standard
+The feature measurement model is given by 
+\begin_inset Formula 
+\begin{equation}
+{\bf h}_{f,i}=\boldsymbol{\zeta}_{i}+\boldsymbol{\eta}_{f},
+\end{equation}
+
+\end_inset
+
+and its error model is then given by 
+\begin_inset Formula 
+\begin{align}
+{\bf r}_{f,i} & ={\bf h}_{f,i}\left({\bf x}\right)\boxminus{\bf h}_{f,i}\left(\hat{{\bf x}}\right)\\
+ & =P_{\zeta_{i}}^{\top}\left[\cos^{-1}\left(\boldsymbol{\zeta}_{i}^{\top}\hat{\boldsymbol{\zeta}}_{i}\right)\frac{\boldsymbol{\zeta}_{i}\times\hat{\boldsymbol{\zeta}}_{i}}{\left\Vert \boldsymbol{\zeta}_{i}\times\hat{\boldsymbol{\zeta}}_{i}\right\Vert }\right]+\boldsymbol{\eta}_{f}\\
+ & =\delta\boldsymbol{\zeta}_{i}+\boldsymbol{\eta}_{f}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The measurement Jacobian is then 
+\begin_inset Formula 
+\begin{align}
+H_{f,i} & =\frac{\partial{\bf r}_{f,i}}{\partial\delta{\bf x}}\\
+ & =\begin{bmatrix}{\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & I & {\bf 0}\end{bmatrix}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Feature Management
+\end_layout
+
+\begin_layout Standard
+We need to choose carefully which features get added to the state and then
+ be able to associate the correct feature measurement to its matching state
+ elements.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Initialization
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Collect features from image
+\end_layout
+
+\begin_layout Enumerate
+Divide image into a grid and keep strongest feature from each area or just
+ do a minimum separation
+\end_layout
+
+\begin_layout Enumerate
+Add unit vectors corresponding to strongest matches to the state
+\end_layout
+
+\begin_layout Enumerate
+Track features with KLT optical flow
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Update
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Compute unit vector from matched KLT measurement
+\end_layout
+
+\begin_layout Enumerate
+Compute difference between measured and predicted unit vectors
+\end_layout
+
+\begin_layout Enumerate
+Apply update
+\end_layout
+
+\begin_layout Enumerate
+If measurement lands within uncertainty bound, compute error, and update
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+If feature leaves frame:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Collect new features from image
+\end_layout
+
+\begin_layout Enumerate
+Divide image into a grid and keep strongest feature from 
+\end_layout
+
+\begin_layout Enumerate
+Replace unit vector corresponding to strongest match to the state
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+If feature state doesn't receive update for 
+\begin_inset Formula $N$
+\end_inset
+
+ frames, initialize new feature state in its place
+\end_layout
+
+\begin_layout Section
+Appendix
+\end_layout
+
+\begin_layout Subsection
+Useful Identities
+\end_layout
+
+\begin_layout Subsubsection
+Cross Product Rotation Identity
+\end_layout
+
+\begin_layout Standard
+Taking the cross product of two arbitrary vectors gives
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\left\lfloor _{\mathcal{A}}{\bf x}\right\rfloor {}_{\mathcal{A}}{\bf y} & =\left\lfloor R\left({\bf q}_{\mathcal{A}\mathcal{B}}\right){}_{\mathcal{B}}{\bf x}\right\rfloor {}_{\mathcal{A}}{\bf y}\\
+ & =\left\lfloor R\left({\bf q}_{\mathcal{A}\mathcal{B}}\right){}_{\mathcal{B}}{\bf x}\right\rfloor R\left({\bf q}_{\mathcal{A}\mathcal{B}}\right){}_{\mathcal{B}}{\bf y}\\
+ & =R\left({\bf q}_{\mathcal{A}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}{\bf x}\right\rfloor {}_{\mathcal{B}}{\bf y}\\
+ & =R\left({\bf q}_{\mathcal{A}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}{\bf x}\right\rfloor R\left({\bf q}_{\mathcal{B}\mathcal{A}}\right){}_{\mathcal{A}}{\bf y},
+\end{align}
+
+\end_inset
+
+which shows us that for a rotation matrix 
+\begin_inset Formula $R$
+\end_inset
+
+, it is true that 
+\begin_inset Formula $\left\lfloor R{\bf v}\right\rfloor =R\left\lfloor {\bf v}\right\rfloor R^{\top}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Time Derivative of a Vector in a Rotating Coordinate Frame
+\end_layout
+
+\begin_layout Standard
+Supposed we have a fixed reference frame 
+\begin_inset Formula $\mathcal{I}$
+\end_inset
+
+ and a rotating frame 
+\begin_inset Formula $\mathcal{B}$
+\end_inset
+
+.
+ The time derivative of an arbitrary vector is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\dot{{\bf p}}={}_{\mathcal{B}}\dot{{\bf p}}+\left\lfloor \boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {\bf p}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This simply says that you must add the rotary motion of 
+\begin_inset Formula $\mathcal{B}$
+\end_inset
+
+ w.r.t.
+ 
+\begin_inset Formula $\mathcal{I}$
+\end_inset
+
+ to whatever the motion is w.r.t.
+ 
+\begin_inset Formula $\mathcal{B}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Time Derivative of a Rotation matrix
+\end_layout
+
+\begin_layout Standard
+Suppose we have a vector in the inertial frame given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+_{\mathcal{I}}{\bf p}=R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}{\bf p}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Taking a time derivative of this and assuming that 
+\begin_inset Formula ${\bf p}$
+\end_inset
+
+ that is fixed w.r.t.
+ 
+\begin_inset Formula $\mathcal{B}$
+\end_inset
+
+, we get
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+_{\mathcal{I}}\dot{{\bf p}}=\dot{R}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}{\bf p},
+\end{equation}
+
+\end_inset
+
+and using the equation for the time derivative of an arbitrary vector also
+ gives us
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+_{\mathcal{I}}\dot{{\bf p}}=\left\lfloor _{\mathcal{I}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{I}}{\bf p}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Equating these, we now have
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\dot{R}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}{\bf p}=\left\lfloor _{\mathcal{I}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{I}}{\bf p},
+\end{equation}
+
+\end_inset
+
+and using the fact that 
+\begin_inset Formula $_{\mathcal{B}}{\bf p}=R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right){}_{\mathcal{I}}{\bf p}$
+\end_inset
+
+, we get
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\dot{R}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)=\left\lfloor _{\mathcal{I}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor .
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Using 
+\begin_inset Formula $_{\mathcal{I}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}=R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}$
+\end_inset
+
+ gives
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\dot{R}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)=\left\lfloor R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor ,
+\end{equation}
+
+\end_inset
+
+and the fact that 
+\begin_inset Formula $\left\lfloor R{\bf v}\right\rfloor =R\left\lfloor {\bf v}\right\rfloor R^{\top}$
+\end_inset
+
+ gives
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\dot{R}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)=R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right).
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Therefore,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\dot{R}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)=R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor .
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Differentiating 
+\begin_inset Formula $R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)=I$
+\end_inset
+
+ w.r.t.
+ time gives
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\dot{R}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)+R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)\dot{R}\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)=0,
+\end{equation}
+
+\end_inset
+
+and solving for 
+\begin_inset Formula $\dot{R}\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)$
+\end_inset
+
+ yields
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\dot{R}\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)=-R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)\dot{R}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right).
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Substituting our solution for 
+\begin_inset Formula $\dot{R}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)$
+\end_inset
+
+ gives us
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dot{R}\left({\bf q}_{\mathcal{B}\mathcal{I}}\right) & =-R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)\\
+ & =-\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right).
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Time Derivative of Feature Distance
+\end_layout
+
+\begin_layout Standard
+The distance to a feature in the camera frame is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+d\left(\rho\right)=\dfrac{1}{\rho}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Differentiating w.r.t.
+ time yields
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dfrac{d}{dt}\left(d\left(\rho\right)\right) & =\dfrac{d}{d\rho}\left(d\left(\rho\right)\right)\dfrac{d}{dt}\left(\rho\right)\\
+ & =d^{\prime}\left(\rho\right)\dot{\rho},
+\end{align}
+
+\end_inset
+
+where
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+d^{\prime}\left(\rho\right) & =\dfrac{d}{d\rho}\left(d\left(\rho\right)\right)\\
+ & =\dfrac{d}{d\rho}\left(\dfrac{1}{\rho}\right)\\
+ & =-\dfrac{1}{\rho^{2}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Time Derivative of a Unit Vector
+\end_layout
+
+\begin_layout Standard
+A unit vectors pointing to a feature in the camera frame is over-parameterized
+ by a quaternion in 
+\begin_inset Formula $SO\left(3\right)$
+\end_inset
+
+ or a vector in 
+\begin_inset Formula $\mathbb{R}^{3}$
+\end_inset
+
+, since its minimal representation is in 
+\begin_inset Formula $\mathbb{R}^{2}$
+\end_inset
+
+.
+ Therefore, it's derivative should be represented in a minimal manner.
+ As discussed in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-4"
+
+\end_inset
+
+, the change in a unit vector can be described by an axis-angle rotation
+ vector, 
+\begin_inset Formula $_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F}\in\mathbb{R}^{2}$
+\end_inset
+
+, in the plane orthogonal to the unit vector.
+ Thus, the time derivative of a unit vector may be given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\frac{\partial}{\partial t}\left(_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right) & =\frac{\partial}{\partial{\bf q}_{\zeta}}\dfrac{\partial{\bf q}_{\zeta}}{\partial t}\left(_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right)\\
+ & =\frac{\partial}{\partial{\bf q}_{\zeta}}\left(_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right)\dfrac{\partial{\bf q}_{\zeta}}{\partial t}\\
+ & =\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor P_{\zeta}{}_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It's important to note that 
+\begin_inset Formula $_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F}$
+\end_inset
+
+ indicates a rotation from the new unit vector direction to the old, and
+ thus, the above equation creates a vector pointing from the old direction
+ to the new.
+\end_layout
+
+\begin_layout Subsubsection
+Projection of a Projection
+\end_layout
+
+\begin_layout Standard
+Projecting onto the unit vector tangent space and immediately back gives
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+P_{\zeta}^{\top}P_{\zeta} & =\left(R^{\top}\left({\bf q}_{\zeta}\right)\begin{bmatrix}{\bf e}_{x} & {\bf e}_{y}\end{bmatrix}\right)^{\top}R^{\top}\left({\bf q}_{\zeta}\right)\begin{bmatrix}{\bf e}_{x} & {\bf e}_{y}\end{bmatrix}\\
+ & =\begin{bmatrix}{\bf e}_{x}^{\top}\\
+{\bf e}_{y}^{\top}
+\end{bmatrix}R\left({\bf q}_{\zeta}\right)R^{\top}\left({\bf q}_{\zeta}\right)\begin{bmatrix}{\bf e}_{x} & {\bf e}_{y}\end{bmatrix}\\
+ & =\begin{bmatrix}{\bf e}_{x}^{\top}\\
+{\bf e}_{y}^{\top}
+\end{bmatrix}\begin{bmatrix}{\bf e}_{x} & {\bf e}_{y}\end{bmatrix}\\
+ & =\begin{bmatrix}{\bf e}_{x}^{\top}{\bf e}_{x} & {\bf e}_{x}^{\top}{\bf e}_{y}\\
+{\bf e}_{y}^{\top}{\bf e}_{x} & {\bf e}_{y}^{\top}{\bf e}_{y}
+\end{bmatrix}\\
+ & =\begin{bmatrix}1 & 0\\
+0 & 1
+\end{bmatrix}\\
+ & =I.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Projection of Double Unit Vector Cross Product
+\end_layout
+
+\begin_layout Standard
+Performing cross products and a projection of an arbitrary vector 
+\begin_inset Formula ${\bf a}$
+\end_inset
+
+ yields
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {\bf a} & =-P_{\zeta}^{\top}{\bf a},
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+which means that 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor =-P_{\zeta}^{\top}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This make sense geometrically because 
+\begin_inset Formula $\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {\bf a}$
+\end_inset
+
+ yields a vector on the tangent plane orthogonal to 
+\begin_inset Formula $P_{\zeta}^{\top}{\bf a}$
+\end_inset
+
+ and 
+\begin_inset Formula $\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {\bf a}$
+\end_inset
+
+ then points opposite of 
+\begin_inset Formula $P_{\zeta}^{\top}{\bf a}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Derivative Identities
+\end_layout
+
+\begin_layout Standard
+The following derivatives are taken from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-4"
+
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\frac{\partial}{\partial t}{\bf q}_{\mathcal{B}\mathcal{I}} & =-_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{I}\mathcal{B}}\\
+\frac{\partial}{\partial{\bf q}}\left(R\left({\bf q}\right){\bf r}\right) & =-\left\lfloor R\left({\bf q}\right){\bf r}\right\rfloor \\
+\frac{\partial}{\partial{\bf q}_{\zeta}}\boldsymbol{\zeta} & =\left\lfloor \boldsymbol{\zeta}\right\rfloor P_{\zeta}\\
+\frac{\partial}{\partial{\bf q}_{\zeta}}\left(P_{\zeta}^{\top}{\bf r}\right) & =-P_{\zeta}^{\top}\left\lfloor {\bf r}\right\rfloor P_{\zeta}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Position Dynamics
+\end_layout
+
+\begin_layout Subsubsection
+Relative to Inertial
+\end_layout
+
+\begin_layout Standard
+The relationship between the inertial and body coordinate systems defined
+ in the inertial frame is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+_{\mathcal{I}}{\bf p}_{\mathcal{I}\mathcal{B}} & =-_{\mathcal{I}}{\bf p}_{\mathcal{B}\mathcal{I}}\\
+ & =-R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{I}}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Differentiating w.r.t.
+ time gives
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+_{\mathcal{I}}\dot{{\bf p}}_{\mathcal{I}\mathcal{B}} & =-\dot{R}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{I}}-R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}\dot{{\bf p}}_{\mathcal{B}\mathcal{I}}\\
+ & =-R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{I}}-R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{I}\mathcal{B}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{I}\mathcal{B}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{I}}\right)\\
+ & =-R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{I}}-R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)\left(-_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}-\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{I}}\right)\\
+ & =R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Relative to Body
+\end_layout
+
+\begin_layout Standard
+The relationship between the inertial and body coordinate systems defined
+ in the body frame is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+_{B}{\bf p}_{\mathcal{B}\mathcal{I}} & =-_{\mathcal{B}}{\bf p}_{\mathcal{I}\mathcal{B}}\\
+ & =-R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right){}_{\mathcal{I}}{\bf p}_{\mathcal{I}\mathcal{B}}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Differentiating w.r.t.
+ time gives
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+_{\mathcal{B}}\dot{{\bf p}}_{\mathcal{B}\mathcal{I}} & =-\dot{R}\left({\bf q}_{\mathcal{B}\mathcal{I}}\right){}_{\mathcal{I}}{\bf p}_{\mathcal{I}\mathcal{B}}-R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right){}_{\mathcal{I}}\dot{{\bf p}}_{\mathcal{I}\mathcal{B}}\\
+ & =\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right){}_{\mathcal{I}}{\bf p}_{\mathcal{I}\mathcal{B}}-R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right){}_{\mathcal{I}}{\bf v}_{\mathcal{B}\mathcal{I}}\\
+ & =\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{I}\mathcal{B}}-{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}\\
+ & =-\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{I}}-{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Attitude Dynamics
+\end_layout
+
+\begin_layout Subsubsection
+Relative to Inertial
+\end_layout
+
+\begin_layout Standard
+From page 34 of 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-4"
+
+\end_inset
+
+, the time derivative of attitude is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dot{{\bf q}}_{\mathcal{B}\mathcal{I}} & =-_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{I}\mathcal{B}}\\
+ & =_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Relative to Body
+\end_layout
+
+\begin_layout Standard
+From page 34 of 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-4"
+
+\end_inset
+
+, the time derivative of attitude is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dot{{\bf q}}_{\mathcal{I}\mathcal{B}} & =-_{\mathcal{I}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\\
+ & =-R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Velocity Dynamics
+\end_layout
+
+\begin_layout Subsubsection
+Relative to Inertial
+\end_layout
+
+\begin_layout Standard
+Applying Newton's law, we have
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){\bf k}{\bf k}^{\top}{}_{\mathcal{B}}{\bf f}+m{}_{\mathcal{I}}{\bf g} & =m_{\mathcal{I}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}}\\
+R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){\bf k}{\bf k}^{\top}{}_{\mathcal{B}}{\bf f}+m{}_{\mathcal{I}}{\bf g} & =m\left(R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{I}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{I}}{\bf v}_{\mathcal{B}\mathcal{I}}\right)\\
+\frac{1}{m}R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){\bf k}{\bf k}^{\top}{}_{\mathcal{B}}{\bf f}+{}_{\mathcal{I}}{\bf g} & =R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{I}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{I}}{\bf v}_{\mathcal{B}\mathcal{I}}\\
+\frac{1}{m}{\bf k}{\bf k}^{\top}{}_{\mathcal{B}}{\bf f}+R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right){}_{\mathcal{I}}{\bf g} & =_{\mathcal{B}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}}+R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)\left\lfloor _{\mathcal{I}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{I}}{\bf v}_{\mathcal{B}\mathcal{I}}\\
+\frac{1}{m}{\bf k}{\bf k}^{\top}{}_{\mathcal{B}}{\bf f}+R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right){}_{\mathcal{I}}{\bf g} & =_{\mathcal{B}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}\\
+_{\mathcal{B}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}} & =\frac{1}{m}{\bf k}{\bf k}^{\top}{}_{\mathcal{B}}{\bf f}+R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right){}_{\mathcal{I}}{\bf g}-\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}\\
+_{\mathcal{B}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}} & ={\bf k}{\bf k}^{\top}{}_{\mathcal{B}}{\bf a}_{\mathcal{B}\mathcal{I}}+R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right){}_{\mathcal{I}}{\bf g}-\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Relative to Body
+\end_layout
+
+\begin_layout Standard
+Applying Newton's law, we have
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+_{\mathcal{B}}{\bf f}+mR^{\top}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{I}}{\bf g} & =m_{\mathcal{B}}\dot{{\bf v}}_{\mathcal{I}\mathcal{B}}\\
+_{\mathcal{B}}{\bf f}+mR^{\top}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{I}}{\bf g} & =m\left(R^{\top}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{I}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{I}\mathcal{B}}\right\rfloor {}_{\mathcal{B}}{\bf v}_{\mathcal{I}\mathcal{B}}\right)\\
+\frac{1}{m}{}_{\mathcal{B}}{\bf f}+R^{\top}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{I}}{\bf g} & =R^{\top}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{I}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{I}\mathcal{B}}\right\rfloor {}_{\mathcal{B}}{\bf v}_{\mathcal{I}\mathcal{B}}\\
+\frac{1}{m}{}_{\mathcal{B}}{\bf f}+R^{\top}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{I}}{\bf g} & =_{\mathcal{B}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{I}\mathcal{B}}\right\rfloor {}_{\mathcal{B}}{\bf v}_{\mathcal{I}\mathcal{B}}\\
+_{\mathcal{B}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}} & =\frac{1}{m}{}_{\mathcal{B}}{\bf f}+R^{\top}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{I}}{\bf g}-\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{I}\mathcal{B}}\right\rfloor {}_{\mathcal{B}}{\bf v}_{\mathcal{I}\mathcal{B}}\\
+_{\mathcal{B}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}} & =_{\mathcal{B}}{\bf a}_{\mathcal{B}\mathcal{I}}+R^{\top}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{I}}{\bf g}-\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Feature Dynamics
+\end_layout
+
+\begin_layout Subsubsection
+Projection onto Tangent Space
+\end_layout
+
+\begin_layout Standard
+The bearing vector is over-parameterized because it is a three element,
+ unit length vector, therefore only two parameters (such as azimuth and
+ elevation) are needed to fully describe it.
+ This leads to a singularity in the covariance associated with the bearing
+ vector, so we will remove one element by projecting onto the space orthogonal
+ to 
+\begin_inset Formula $\boldsymbol{\zeta}_{i}$
+\end_inset
+
+.
+ Using the camera axes as basis vectors 
+\begin_inset Formula ${\bf e}_{x}$
+\end_inset
+
+, 
+\begin_inset Formula ${\bf e}_{y}$
+\end_inset
+
+, 
+\begin_inset Formula ${\bf e}_{z}$
+\end_inset
+
+ and the shortest angle quaternion rotation from 
+\begin_inset Formula ${\bf e}_{z}$
+\end_inset
+
+ to 
+\begin_inset Formula $_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}$
+\end_inset
+
+ given by 
+\begin_inset Formula ${\bf q}_{F\mathcal{C}}$
+\end_inset
+
+, we can construct a projection out of the 2D tangent space about the feature
+ unit vector 
+\begin_inset Formula $_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}$
+\end_inset
+
+, given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+P_{\zeta}=R^{\top}\left({\bf q}_{\zeta}\right)\begin{bmatrix}{\bf e}_{x} & {\bf e}_{y}\end{bmatrix}\in\mathbb{R}^{3\times2}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Relative to Camera
+\end_layout
+
+\begin_layout Standard
+We will derive the feature dynamics relative to the camera.
+ A fixed feature location can be defined in the inertial frame by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+_{\mathcal{I}}{\bf p}_{\mathcal{I}F}={}_{\mathcal{I}}{\bf p}_{\mathcal{I}\mathcal{C}}+R\left({\bf q}_{\mathcal{I}\mathcal{C}}\right){}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}d\left(\rho\right).
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Taking the time derivative of the entire equation yields
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+0 & =_{\mathcal{I}}{\bf v}_{\mathcal{C}\mathcal{I}}+\frac{d}{dt}\left(R\left({\bf q}_{\mathcal{I}\mathcal{C}}\right)\right){}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}d\left(\rho\right)+R\left({\bf q}_{\mathcal{I}\mathcal{C}}\right)\frac{d}{dt}\left(_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right)d\left(\rho\right)+R\left({\bf q}_{\mathcal{I}\mathcal{C}}\right){}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\frac{d}{dt}\left(d\left(\rho\right)\right)\\
+ & =_{\mathcal{I}}{\bf v}_{\mathcal{C}\mathcal{I}}+R\left({\bf q}_{\mathcal{I}\mathcal{C}}\right)\left\lfloor _{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}\right\rfloor {}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}d\left(\rho\right)+R\left({\bf q}_{\mathcal{I}\mathcal{C}}\right)\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor P_{\zeta}{}_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F}d\left(\rho\right)+R\left({\bf q}_{\mathcal{I}\mathcal{C}}\right){}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}d^{\prime}\left(\rho\right)\dot{\rho},
+\end{align}
+
+\end_inset
+
+and rotating into the camera frame gives
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+0 & =_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}+\left\lfloor _{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}\right\rfloor {}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}d\left(\rho\right)+\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor P_{\zeta}{}_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F}d\left(\rho\right)+{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}d^{\prime}\left(\rho\right)\dot{\rho}\\
+ & =_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}-\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}d\left(\rho\right)+\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor P_{\zeta}{}_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F}d\left(\rho\right)+{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}d^{\prime}\left(\rho\right)\dot{\rho}.\label{eq:feature}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In order to isolate 
+\begin_inset Formula $_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F}$
+\end_inset
+
+, multiply by 
+\begin_inset Formula $d\left(\rho\right)^{-1}P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor $
+\end_inset
+
+ to get
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+0 & =d\left(\rho\right)^{-1}P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}-d\left(\rho\right)^{-1}P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}d\left(\rho\right)+d\left(\rho\right)^{-1}P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor P_{\zeta}{}_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F}d\left(\rho\right)+d\left(\rho\right)^{-1}P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}d^{\prime}\left(\rho\right)\dot{\rho}\\
+ & =d\left(\rho\right)^{-1}P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}-P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}+P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor P_{\zeta}{}_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F},
+\end{align}
+
+\end_inset
+
+and using the identity 
+\begin_inset Formula $P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor =-P_{\zeta}^{\top}$
+\end_inset
+
+ followed by 
+\begin_inset Formula $P_{\zeta}^{\top}P_{\zeta}=I$
+\end_inset
+
+ gives us
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+0 & =d\left(\rho\right)^{-1}P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}+P_{\zeta}^{\top}{}_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}-P_{\zeta}^{\top}P_{\zeta}{}_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F}\\
+ & =d\left(\rho\right)^{-1}P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}+P_{\zeta}^{\top}{}_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}-{}_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Solving for 
+\begin_inset Formula $_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F}$
+\end_inset
+
+ yields
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F} & =P_{\zeta}^{\top}\left(_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}+\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \frac{_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}}{d\left(\rho\right)}\right)\\
+ & =P_{\zeta}^{\top}\left(_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}\right).
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now, to isolate 
+\begin_inset Formula $\dot{\rho}$
+\end_inset
+
+, multiply 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:feature"
+
+\end_inset
+
+ by 
+\begin_inset Formula $d^{\prime}\left(\rho\right)^{-1}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}$
+\end_inset
+
+ to get
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+0 & =d^{\prime}\left(\rho\right)^{-1}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}-d^{\prime}\left(\rho\right)^{-1}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}d\left(\rho\right)+d^{\prime}\left(\rho\right)^{-1}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor P_{\zeta}{}_{\mathcal{C}}\dot{\boldsymbol{\zeta}}_{\mathcal{C}F}d\left(\rho\right)+d^{\prime}\left(\rho\right)^{-1}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}d^{\prime}\left(\rho\right)\dot{\rho}\\
+ & =d^{\prime}\left(\rho\right)^{-1}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}+\dot{\rho},
+\end{align}
+
+\end_inset
+
+and solving for 
+\begin_inset Formula $\dot{\rho}$
+\end_inset
+
+ yields
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dot{\rho} & =\dfrac{_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}}{d^{\prime}\left(\rho\right)}\\
+ & =-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Camera dynamics
+\end_layout
+
+\begin_layout Standard
+The position of the camera in the inertial frame is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+_{\mathcal{I}}{\bf p}_{\mathcal{I}\mathcal{C}}={}_{\mathcal{I}}{\bf p}_{\mathcal{I}\mathcal{B}}+R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{G}}+R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)R\left({\bf q}_{\mathcal{B}\mathcal{G}}\right){}_{\mathcal{G}}{\bf p}_{\mathcal{G}\mathcal{C}},
+\end{equation}
+
+\end_inset
+
+and assuming that the camera frame is centered on and aligned with the gimbal
+ frame, we are left with
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+_{\mathcal{I}}{\bf p}_{\mathcal{I}\mathcal{C}} & =_{\mathcal{I}}{\bf p}_{\mathcal{I}\mathcal{B}}+R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Differentiating gives
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+_{\mathcal{I}}\dot{{\bf p}}_{\mathcal{I}\mathcal{C}}=_{\mathcal{I}}\dot{{\bf p}}_{\mathcal{I}\mathcal{B}}+\dot{R}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}+R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}\dot{{\bf p}}_{\mathcal{B}\mathcal{C}},
+\end{equation}
+
+\end_inset
+
+and assuming a fixed camera, yields
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+_{\mathcal{I}}\dot{{\bf p}}_{\mathcal{I}\mathcal{C}} & =_{\mathcal{I}}\dot{{\bf p}}_{\mathcal{I}\mathcal{B}}+\dot{R}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\\
+_{\mathcal{I}}{\bf v}_{\mathcal{C}\mathcal{I}} & =_{\mathcal{I}}{\bf v}_{\mathcal{B}\mathcal{I}}+R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Rotating everything into the camera frame gives
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+R\left({\bf q}_{\mathcal{C}\mathcal{K}}\right)R\left({\bf q}_{\mathcal{K}\mathcal{B}}\right)R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right){}_{\mathcal{I}}{\bf v}_{\mathcal{C}\mathcal{I}} & =R\left({\bf q}_{\mathcal{C}\mathcal{K}}\right)R\left({\bf q}_{\mathcal{K}\mathcal{B}}\right)R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right){}_{\mathcal{I}}{\bf v}_{\mathcal{B}\mathcal{I}}+R\left({\bf q}_{\mathcal{C}\mathcal{K}}\right)R\left({\bf q}_{\mathcal{K}\mathcal{B}}\right)R\left({\bf q}_{\mathcal{B}\mathcal{I}}\right)R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\\
+_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}} & =R\left({\bf q}_{\mathcal{C}\mathcal{K}}\right)R\left({\bf q}_{\mathcal{K}\mathcal{B}}\right){}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+R\left({\bf q}_{\mathcal{C}\mathcal{K}}\right)R\left({\bf q}_{\mathcal{K}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\\
+_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}} & =R\left({\bf q}_{\mathcal{C}\mathcal{K}}\right)R\left({\bf q}_{\mathcal{K}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\\
+_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}} & =R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right).
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The angular velocity of the camera is the combination of body rotation and
+ gimbal rotation given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}} & =R\left({\bf q}_{\mathcal{C}\mathcal{K}}\right)R\left({\bf q}_{\mathcal{K}\mathcal{G}}\right)R\left({\bf q}_{\mathcal{G}\mathcal{B}}\right){}_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}+R\left({\bf q}_{\mathcal{C}\mathcal{K}}\right)R\left({\bf q}_{\mathcal{K}\mathcal{G}}\right){}_{\mathcal{G}}\boldsymbol{\omega}_{\mathcal{G}\mathcal{B}}\\
+ & =R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right){}_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}+R\left({\bf q}_{\mathcal{C}\mathcal{G}}\right){}_{\mathcal{G}}\boldsymbol{\omega}_{\mathcal{G}\mathcal{B}},
+\end{align}
+
+\end_inset
+
+and since we are assuming a fixed camera, this becomes
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}=R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right){}_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Jacobians of State Dynamics
+\end_layout
+
+\begin_layout Standard
+The state and input noise is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+{\bf x} & =\begin{bmatrix}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{I}}^{\top} & {\bf q}_{\mathcal{I}\mathcal{B}}^{\top} & _{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}^{\top} & \boldsymbol{\beta}_{\boldsymbol{\omega}}^{\top} & \boldsymbol{\beta}_{a}^{\top} & {\bf q}_{\zeta}^{\top} & \rho\end{bmatrix}^{\top}\\
+{\bf u} & =\begin{bmatrix}\boldsymbol{\eta}_{\omega}^{\top} & \boldsymbol{\eta}_{a}^{\top} & \boldsymbol{\eta}_{\zeta}^{\top} & \eta_{\rho}^{\top}\end{bmatrix}^{\top},
+\end{align}
+
+\end_inset
+
+where it's important to recall that 
+\begin_inset Formula $\dot{{\bf q}}_{\mathcal{I}\mathcal{B}}\in\mathbb{R}^{3}$
+\end_inset
+
+, 
+\begin_inset Formula $\dot{{\bf q}}_{\mathcal{F}\mathcal{C}}\in\mathbb{R}^{2}$
+\end_inset
+
+, 
+\begin_inset Formula $\boldsymbol{\eta}_{\zeta}\in\mathbb{R}^{2}$
+\end_inset
+
+, and 
+\begin_inset Formula $\eta_{\rho}\in\mathbb{R}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The true body-relative state dynamics with noise added where appropriate
+ are given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+_{\mathcal{B}}\dot{{\bf p}}_{\mathcal{B}\mathcal{I}} & =-\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{I}}-{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}\\
+\dot{{\bf q}}_{\mathcal{I}\mathcal{B}} & =-R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\\
+_{\mathcal{B}}\dot{{\bf v}}_{\mathcal{B}\mathcal{I}} & ={\bf k}{\bf k}^{\top}{}_{\mathcal{B}}{\bf a}_{\mathcal{B}\mathcal{I}}+R^{\top}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{I}}{\bf g}-\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}\\
+\dot{\boldsymbol{\beta}}_{\omega} & =\boldsymbol{\eta}_{\omega}\\
+\dot{\boldsymbol{\beta}}_{a} & =\boldsymbol{\eta}_{a}\\
+\dot{{\bf q}}_{\mathcal{F}\mathcal{C}} & =P_{\zeta}^{\top}\left(_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}\right)+\boldsymbol{\eta}_{\zeta}\\
+\dot{\rho} & =-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}+\eta_{\rho},
+\end{align}
+
+\end_inset
+
+where
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}} & =_{\mathcal{B}}\bar{\boldsymbol{\omega}}_{\mathcal{B}\mathcal{I}}-\boldsymbol{\beta}_{\omega}-\boldsymbol{\eta}_{\omega}\\
+_{\mathcal{B}}{\bf a}_{\mathcal{B}\mathcal{I}} & =_{\mathcal{B}}\bar{{\bf a}}_{\mathcal{B}\mathcal{I}}-\boldsymbol{\beta}_{a}-\boldsymbol{\eta}_{a}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The covariance of the state dynamics w.r.t.
+ the state is then given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+F=\dfrac{\partial\dot{{\bf x}}}{\partial{\bf x}}=\begin{bmatrix}-\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor  & {\bf 0} & -I & -\left\lfloor _{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{I}}\right\rfloor  & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf 0} & \left\lfloor R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor  & {\bf 0} & R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right) & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf 0} & -\left\lfloor R^{\top}\left({\bf q}_{\mathcal{I}\mathcal{B}}\right){}_{\mathcal{I}}{\bf g}\right\rfloor  & -\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor  & -\left\lfloor _{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}\right\rfloor  & -{\bf k}{\bf k}^{\top} & {\bf 0} & {\bf 0}\\
+{\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf 0} & {\bf 0} & \dfrac{\partial\dot{{\bf q}}_{\mathcal{I}\mathcal{B}}}{\partial{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}} & \dfrac{\partial\dot{{\bf q}}_{\mathcal{I}\mathcal{B}}}{\partial\boldsymbol{\beta}_{\omega}} & {\bf 0} & \dfrac{\partial\dot{{\bf q}}_{\mathcal{I}\mathcal{B}}}{\partial{\bf q}_{\zeta}} & \dfrac{\partial\dot{{\bf q}}_{\mathcal{I}\mathcal{B}}}{\partial\rho}\\
+{\bf 0} & {\bf 0} & \dfrac{\partial\dot{\rho}}{\partial{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}} & \dfrac{\partial\dot{\rho}}{\partial\boldsymbol{\beta}_{\omega}} & {\bf 0} & \dfrac{\partial\dot{\rho}}{\partial{\bf q}_{\zeta}} & \dfrac{\partial\dot{\rho}}{\partial\rho}
+\end{bmatrix},
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dfrac{\partial\dot{{\bf q}}_{\mathcal{I}\mathcal{B}}}{\partial{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}} & =\dfrac{\partial}{\partial{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}}\left(P_{\zeta}^{\top}\left(_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}\right)+\boldsymbol{\eta}_{\zeta}\right)\\
+ & =\dfrac{\partial}{\partial{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}}\left(P_{\zeta}^{\top}\left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right){}_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\right)\right)+\boldsymbol{\eta}_{\zeta}\right)\\
+ & =\dfrac{\partial}{\partial{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}}\left(\rho P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right){}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}\right)\\
+ & =\rho P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dfrac{\partial\dot{{\bf q}}_{\mathcal{I}\mathcal{B}}}{\partial\boldsymbol{\beta}_{\omega}} & =\dfrac{\partial}{\partial\boldsymbol{\beta}_{\omega}}\left(P_{\zeta}^{\top}\left(_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}\right)+\boldsymbol{\eta}_{\zeta}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\beta}_{\omega}}\left(P_{\zeta}^{\top}\left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right){}_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\right)\right)+\boldsymbol{\eta}_{\zeta}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\beta}_{\omega}}\left(P_{\zeta}^{\top}\left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}\bar{\boldsymbol{\omega}}_{\mathcal{B}\mathcal{I}}-\boldsymbol{\beta}_{\omega}-\boldsymbol{\eta}_{\omega}\right)+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\bar{\boldsymbol{\omega}}_{\mathcal{B}\mathcal{I}}-\boldsymbol{\beta}_{\omega}-\boldsymbol{\eta}_{\omega}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\right)\right)+\boldsymbol{\eta}_{\zeta}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\beta}_{\omega}}\left(P_{\zeta}^{\top}\left(-R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\boldsymbol{\beta}_{\omega}-\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor \boldsymbol{\beta}_{\omega}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\beta}_{\omega}}\left(P_{\zeta}^{\top}\left(-R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\boldsymbol{\beta}_{\omega}+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right\rfloor \boldsymbol{\beta}_{\omega}\right)\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\beta}_{\omega}}\left(P_{\zeta}^{\top}\left(-R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right\rfloor \right)\boldsymbol{\beta}_{\omega}\right)\\
+ & =P_{\zeta}^{\top}\left(-R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right\rfloor \right)
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dfrac{\partial\dot{{\bf q}}_{\mathcal{I}\mathcal{B}}}{\partial{\bf q}_{\zeta}} & =\dfrac{\partial}{\partial{\bf q}_{\zeta}}\left(P_{\zeta}^{\top}\left(_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}\right)+\boldsymbol{\eta}_{\zeta}\right)\\
+ & =\dfrac{\partial}{\partial{\bf q}_{\zeta}}\left(P_{\zeta}^{\top}{}_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}+\rho P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}\right)\\
+ & =\dfrac{\partial}{\partial{\bf q}_{\zeta}}\left(P_{\zeta}^{\top}{}_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}\right)+\rho\dfrac{\partial}{\partial{\bf q}_{\zeta}}\left(P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}\right)\\
+ & =\dfrac{\partial}{\partial{\bf q}_{\zeta}}\left(P_{\zeta}^{\top}{}_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}\right)+\rho\dfrac{\partial}{\partial{\bf q}_{\zeta}}\left(P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}\right)\\
+ & =-P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}\right\rfloor P_{\zeta}-\rho\dfrac{\partial}{\partial{\bf q}_{\zeta}}\left(P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}\right\rfloor {}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right)\\
+\\
+\\
+\\
+\\
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dfrac{\partial\dot{{\bf q}}_{\mathcal{I}\mathcal{B}}}{\partial\rho} & =\dfrac{\partial}{\partial\rho}\left(P_{\zeta}^{\top}\left(_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}\right)+\boldsymbol{\eta}_{\zeta}\right)\\
+ & =\dfrac{\partial}{\partial\rho}\left(\rho P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}\right)\\
+ & =P_{\zeta}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dfrac{\partial\dot{\rho}}{\partial{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}} & =\dfrac{\partial}{\partial{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}+\eta_{\rho}\right)\\
+ & =\dfrac{\partial}{\partial{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}\left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\right)+\eta_{\rho}\right)\\
+ & =\dfrac{\partial}{\partial{}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right){}_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}\right)\\
+ & =-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dfrac{\partial\dot{\rho}}{\partial\boldsymbol{\beta}_{\omega}} & =\dfrac{\partial}{\partial\boldsymbol{\beta}_{\omega}}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}+\eta_{\rho}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\beta}_{\omega}}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}\left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\right)+\eta_{\rho}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\beta}_{\omega}}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}\left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\bar{\boldsymbol{\omega}}_{\mathcal{B}\mathcal{I}}-\boldsymbol{\beta}_{\omega}-\boldsymbol{\eta}_{\omega}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\right)+\eta_{\rho}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\beta}_{\omega}}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right\rfloor \boldsymbol{\beta}_{\omega}\right)\\
+ & =-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right\rfloor 
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dfrac{\partial\dot{\rho}}{\partial{\bf q}_{\zeta}} & =\dfrac{\partial}{\partial{\bf q}_{\zeta}}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}+\eta_{\rho}\right)\\
+ & =\dfrac{\partial}{\partial{\bf q}_{\zeta}}\left(-\rho^{2}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}^{\top}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right)\\
+ & =-\rho^{2}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}^{\top}\dfrac{\partial}{\partial{\bf q}_{\zeta}}\left(_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right)\\
+ & =-\rho^{2}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}^{\top}\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor P_{\zeta}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dfrac{\partial\dot{\rho}}{\partial\rho} & =\dfrac{\partial}{\partial\rho}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}+\eta_{\rho}\right)\\
+ & =-2\rho{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The covariance of the state dynamics w.r.t.
+ the input noise is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+G=\dfrac{\partial\dot{{\bf x}}}{\partial{\bf u}}=\begin{bmatrix}-\left\lfloor _{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{I}}\right\rfloor  & {\bf 0} & {\bf 0} & {\bf 0}\\
+R\left({\bf q}_{\mathcal{I}\mathcal{B}}\right) & {\bf 0} & {\bf 0} & {\bf 0}\\
+-\left\lfloor _{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}\right\rfloor  & -{\bf k}{\bf k}^{\top} & {\bf 0} & {\bf 0}\\
+I & {\bf 0} & {\bf 0} & {\bf 0}\\
+{\bf 0} & I & {\bf 0} & {\bf 0}\\
+\dfrac{\partial\dot{\boldsymbol{\zeta}}}{\partial\boldsymbol{\eta}_{\omega}} & {\bf 0} & I & {\bf 0}\\
+\dfrac{\partial\dot{\rho}}{\partial\boldsymbol{\eta}_{\omega}} & {\bf 0} & {\bf 0} & 1
+\end{bmatrix},
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+where
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dfrac{\partial\dot{{\bf q}}_{\zeta}}{\partial\boldsymbol{\eta}_{\omega}} & =\dfrac{\partial}{\partial\boldsymbol{\eta}_{\omega}}\left(P_{\zeta}^{\top}\left(_{\mathcal{C}}\boldsymbol{\omega}_{\mathcal{C}\mathcal{I}}+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor {}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}\right)+\boldsymbol{\eta}_{\zeta}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\eta}_{\omega}}\left(P_{\zeta}^{\top}\left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right){}_{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\right)\right)+\boldsymbol{\eta}_{\zeta}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\eta}_{\omega}}\left(P_{\zeta}^{\top}\left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}\bar{\boldsymbol{\omega}}_{\mathcal{B}\mathcal{I}}-\boldsymbol{\beta}_{\omega}-\boldsymbol{\eta}_{\omega}\right)+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor \left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\bar{\boldsymbol{\omega}}_{\mathcal{B}\mathcal{I}}-\boldsymbol{\beta}_{\omega}-\boldsymbol{\eta}_{\omega}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\right)\right)+\boldsymbol{\eta}_{\zeta}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\eta}_{\omega}}\left(P_{\zeta}^{\top}\left(-R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\boldsymbol{\eta}_{\omega}-\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor \boldsymbol{\eta}_{\omega}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\eta}_{\omega}}\left(P_{\zeta}^{\top}\left(-R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\boldsymbol{\eta}_{\omega}+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right\rfloor \boldsymbol{\eta}_{\omega}\right)\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\eta}_{\omega}}\left(P_{\zeta}^{\top}\left(-R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right\rfloor \right)\boldsymbol{\eta}_{\omega}\right)\\
+ & =P_{\zeta}^{\top}\left(-R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)+\rho\left\lfloor _{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}\right\rfloor R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right\rfloor \right)
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dfrac{\partial\dot{\rho}}{\partial\boldsymbol{\eta}_{\omega}} & =\dfrac{\partial}{\partial\boldsymbol{\eta}_{\omega}}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}{}_{\mathcal{C}}{\bf v}_{\mathcal{C}\mathcal{I}}+\eta_{\rho}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\eta}_{\omega}}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}\left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\boldsymbol{\omega}_{\mathcal{B}\mathcal{I}}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\right)+\eta_{\rho}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\eta}_{\omega}}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}\left(R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left(_{\mathcal{B}}{\bf v}_{\mathcal{B}\mathcal{I}}+\left\lfloor _{\mathcal{B}}\bar{\boldsymbol{\omega}}_{\mathcal{B}\mathcal{I}}-\boldsymbol{\beta}_{\omega}-\boldsymbol{\eta}_{\omega}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\right)+\eta_{\rho}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\eta}_{\omega}}\left(\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor \boldsymbol{\eta}_{\omega}\right\rfloor {}_{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right)\\
+ & =\dfrac{\partial}{\partial\boldsymbol{\eta}_{\omega}}\left(-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right\rfloor \boldsymbol{\eta}_{\omega}\right)\\
+ & =-\rho^{2}{}_{\mathcal{C}}\boldsymbol{\zeta}_{\mathcal{C}F}^{\top}R\left({\bf q}_{\mathcal{C}\mathcal{B}}\right)\left\lfloor _{\mathcal{B}}{\bf p}_{\mathcal{B}\mathcal{C}}\right\rfloor .
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+Hertzberg, Christoph, et al.
+ "Integrating generic sensor fusion algorithms with sound state representations
+ through encapsulation of manifolds." Information Fusion 14.1 (2013): 57-77.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-2"
+
+\end_inset
+
+Wheeler and Koch.
+ "Derivation of the Relative Multiplicative Extended Kalman Filter"
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-3"
+
+\end_inset
+
+Beard, Randal W., and Timothy W.
+ McLain.
+ "Small unmanned aircraft: Theory and practice".
+ Princeton university press, 2012.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-4"
+
+\end_inset
+
+Bloesch, Michael Andre.
+ State Estimation for Legged Robots–Kinematics, Inertial Sensing, and Computer
+ Vision.
+ Diss.
+ 2017.
+\end_layout
+
+\end_body
+\end_document

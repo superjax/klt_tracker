@@ -1,0 +1,54 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsbsy}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{calc} 
+\usepackage{tikz}                                       
+\usetikzlibrary{positioning,graphs,calc,backgrounds,fit,patterns}
+
+\mode<presentation>
+\usetheme[footline=empty]{Magicc}
+
+\newcommand{\Vc}{\check{\mathbf{v}}}
+\newcommand{\Vg}{\mathbf{v}}
+\newcommand{\hvec}{\overset{\rightharpoonup}}
+\newcommand{\argmin}{\arg\!\min}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\newcommand{\highlight}[1]{{\color{BYUorange}#1}}
+
+\title{Title Goes Here}
+\author{Your Name Here}
+
+\institute{MAGICC Lab \\ Brigham Young University}
+%\date{9 June 2016}
+
+\addtobeamertemplate{frametitle}{}{%
+        \begin{tikzpicture}[remember picture,overlay]
+        \node[anchor=north east,yshift=2pt] at (current page.north east) {\includegraphics[height=0.75cm]{magicc_logo_white}};
+        \end{tikzpicture}}
+
+\AtBeginSection{\frame{\frametitle{Outline}\tableofcontents[currentsection]}}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame} \frametitle{1st Frame}
+  \begin{itemize}
+	\item Here is an item in a bulleted list. 
+	\item Another item in a bulleted list.
+	\begin{enumerate}
+		\item An item in a numbered list.
+		\item Another item in a numbered list.
+	\end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\end{document}
