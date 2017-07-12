@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import rospy
 from sensor_msgs.msg import Image
 from sensor_msgs.msg import Imu
@@ -9,8 +11,8 @@ from nav_msgs.msg import Odometry
 import random
 
 class KLT_tracker:
-    def __init__(self):
-        self.image_sub = rospy.Subscriber("/image_mono", Image, self.image_callback)
+    def __init__(self, num_features):
+        self.image_sub = rospy.Subscriber("camera/image_raw", Image, self.image_callback)
         self.bridge = CvBridge()
 
         self.prev_image = []
@@ -18,7 +20,7 @@ class KLT_tracker:
 
         self.plot_matches = True
 
-        self.num_features = 20
+        self.num_features = num_features
 
         empty_feature_array = np.zeros((self.num_features, 2, 1))
         self.features = [empty_feature_array, np.zeros(self.num_features)]
@@ -115,6 +117,6 @@ class KLT_tracker:
 if __name__ == "__main__":
     rospy.init_node("rovio")
 
-    thing = KLT_tracker()
+    thing = KLT_tracker(20)
 
     rospy.spin()
