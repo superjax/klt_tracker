@@ -15,3 +15,10 @@ catkin_package(
   INCLUDE_DIRS
   CATKIN_DEPENDS roscpp rospy nav_msgs std_msgs sensor_msgs
 )
+
+catkin_python_setup()
+
+# catkin_install_python(PROGRAMS src/klt_tracker.py
+#                       DESTINATION ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION})
+#                       # Put an __init__.py file in the package location so it can be imported
+# file(WRITE ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}/__init__.py "")
